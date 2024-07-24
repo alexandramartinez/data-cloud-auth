@@ -4,6 +4,8 @@ This is a simple Mule 4 application where you can see the process to authenticat
 
 For more examples and instructions to integrate MuleSoft and Data Cloud using the connector, please see [this repo](https://github.com/alexandramartinez/datacloud-mulesoft-integration).
 
+Video explanation: [How to manually authenticate to Salesforce Data Cloud through a MuleSoft integration](https://youtu.be/iGlPOy_EMlE)
+
 > [!IMPORTANT]
 > Only use this manual authorization if the operation you are trying to access is not currently available in [Salesforce Data Cloud Connector - Mule 4](https://www.mulesoft.com/exchange/com.mulesoft.connectors/mule4-sdc-connector/). Otherwise, please use the connector instead.
 
