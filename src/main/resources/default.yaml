@@ -1,0 +1,7 @@
+connectedApp:
+  client:
+    id: ""
+    secret: ""
+salesforce:
+  username: ""
+  password: ""

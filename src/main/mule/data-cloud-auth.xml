@@ -1,0 +1,52 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+  <configuration-properties file="default.yaml" doc:name="Configuration properties" />
+  <http:listener-config name="HTTP_Listener_config">
+    <http:listener-connection host="0.0.0.0" port="8081" />
+  </http:listener-config>
+  <flow name="name1">
+    <http:listener path="test" config-ref="HTTP_Listener_config" doc:name="Listener" doc:id="ooklje" />
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload>
+          <![CDATA[%dw 2.0
+        output application/x-www-form-urlencoded
+        ---
+        {
+          client_id: Mule::p('connectedApp.client.id'),
+          client_secret: Mule::p('connectedApp.client.secret'),
+          username: Mule::p('salesforce.username'),
+          password: Mule::p('salesforce.password'),
+          grant_type: "password"
+        }
+        ]]>
+        </ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <http:request doc:name="SFresponse" doc:id="botkyn" target="SFresponse" method="POST" url="https://login.salesforce.com/services/oauth2/token" />
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload>
+          <![CDATA[%dw 2.0
+        output application/x-www-form-urlencoded
+        ---
+        {
+          grant_type: "urn:salesforce:grant-type:external:cdp",
+          subject_token: vars.SFresponse.access_token,
+          subject_token_type: "urn:ietf:params:oauth:token-type:access_token"
+        }
+        ]]>
+        </ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <http:request doc:name="DCresponse" doc:id="evkiig" target="DCresponse" method="POST" url="#[vars.SFresponse.instance_url ++ '/services/a360/token']" />
+    <http:request doc:name="Request" doc:id="unzulc" url="#['https://' ++ vars.DCresponse.instance_url ++ '/api/v1/ingest/jobs']">
+      <http:headers>
+        <![CDATA[#[{
+            "Authorization": "Bearer " ++ vars.DCresponse.access_token
+          }]]]>
+      </http:headers>
+    </http:request>
+  </flow>
+</mule>
