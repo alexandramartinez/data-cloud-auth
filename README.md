@@ -9,6 +9,11 @@ Video explanation: [How to manually authenticate to Salesforce Data Cloud throug
 > [!IMPORTANT]
 > Only use this manual authorization if the operation you are trying to access is not currently available in [Salesforce Data Cloud Connector - Mule 4](https://www.mulesoft.com/exchange/com.mulesoft.connectors/mule4-sdc-connector/). Otherwise, please use the connector instead.
 
+## Similar repos
+
+[![](https://github-readme-stats.vercel.app/api/pin/?username=alexandramartinez&repo=datacloud-mulesoft-integration&theme=default_repocard)](https://github.com/alexandramartinez/datacloud-mulesoft-integration)
+[![](https://github-readme-stats.vercel.app/api/pin/?username=alexandramartinez&repo=mule-dynamodb-to-datacloud&theme=default_repocard)](https://github.com/alexandramartinez/mule-dynamodb-to-datacloud)
+
 ## Auth process explained
 
 These are all the steps the Mule application is taking care of. If you intend to use this code, you only need to update the properties in [default.yaml](src/main/resources/default.yaml).
